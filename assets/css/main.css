@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700&family=Nunito+Sans:wght@300;400;600&family=Roboto+Mono:wght@400&display=swap");
+@import "tailwindcss";
+
+:root {
+  /* LIGHT THEME */
+  --c-bg: #f7f8fa;
+  --c-surface: #ffffff;
+  --c-text: #1c1c1c;
+  --c-text-2: #4a4a4a;
+  --c-primary: #002060;
+  --c-primary-h: #001a4d;
+  --c-secondary: #dae3f3;
+  --c-border: #d9d9d9;
+  --c-highlight: #0d3880;
+
+  /* FONTS */
+  --ff-heading: "M PLUS Rounded 1c", sans-serif;
+  --ff-body: "Nunito Sans", system-ui, sans-serif;
+  --ff-mono: "Roboto Mono", monospace;
+}
+
+[data-theme="dark"] {
+  --c-bg: #1a1c1f;
+  --c-surface: #2b2e31;
+  --c-text: #e0e0e0;
+  --c-text-2: #9a9fa5;
+  --c-primary: #7896d6;
+  --c-primary-h: #5c7ac1;
+  --c-secondary: #2e3e5b;
+  --c-border: #3b3f43;
+  --c-highlight: #1c4ca2;
+}
+
+/* Globals */
+
+body {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--ff-heading);
+  font-weight: 700;
+}
+h4,
+h5,
+h6 {
+  font-family: var(--ff-heading);
+  font-weight: 500;
+}
+
+body,
+p,
+li,
+input,
+button {
+  font-family: var(--ff-body);
+}
+
+code,
+pre,
+.stat-number {
+  font-family: var(--ff-mono);
+}
