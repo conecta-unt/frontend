@@ -3,19 +3,33 @@ useSeoMeta({
   title: "Conecta UNT",
   description: "Conectamos talento universitario con oportunidades reales.",
 });
-
-import Hero from "./components/hero.vue";
 </script>
 
 <template>
-  <main>
-    <Hero />
-  </main>
+  <NuxtLayout name="landing" full>
+    <template #presentation>
+      <h1 class="text-(--c-bg) text-4xl text-center">
+        Bienvenido a <span class="text-(--c-brand)">ConectaUNT</span>
+      </h1>
+      <h2 class="text-(--c-bg) text-lg text-center">
+        Donde conectamos talento universitario con oportunidades reales
+      </h2>
+    </template>
 
-  <footer
-    class="flex flex-col md:flex-row items-center justify-center w-full bg-(--c-primary) py-8 px-4 text-(--c-bg) gap-2 md:gap-4"
-  >
-    <p>Síguenos en redes sociales: @ConectaUNT</p>
-    <p>&copy 2025. Todos los derechos reservados.</p>
-  </footer>
+    <template #links>
+      <NuxtLink
+        to="/registrar"
+        class="bg-(--c-brand) text-(--c-text) text-lg font-bold py-1 px-4 rounded-lg"
+      >
+        Regístrate
+      </NuxtLink>
+
+      <NuxtLink
+        to="/sobre-nosotros"
+        class="border-1 border-(--c-bg) text-(--c-bg) text-lg font-bold py-1 px-4 rounded-lg"
+      >
+        Más
+      </NuxtLink>
+    </template>
+  </NuxtLayout>
 </template>
