@@ -13,6 +13,8 @@
   --c-border: #d9d9d9;
   --c-highlight: #0d3880;
 
+  --c-brand: #fff000;
+
   /* FONTS */
   --ff-heading: "M PLUS Rounded 1c", sans-serif;
   --ff-body: "Nunito Sans", system-ui, sans-serif;
