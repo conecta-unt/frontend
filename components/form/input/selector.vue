@@ -30,7 +30,11 @@ onMounted(() => {
       :name="name"
       :id="id"
       :data-placeholder="placeholder !== undefined"
-      class="outline-1 outline-white rounded-lg p-2 text-white w-full"
+      class="outline-1 outline-white rounded-lg p-2 w-full"
+      :class="{
+        'text-gray-300': model === undefined,
+        'text-white': model,
+      }"
     >
       <option
         v-if="placeholder"

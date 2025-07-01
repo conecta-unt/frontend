@@ -16,9 +16,9 @@
     <template #footer>
       <p class="text-white">
         ¿Ya tienes una cuenta?
-        <NuxtLink to="/auth/login" class="text-(--c-brand) underline"
-          >Inicia Sesión</NuxtLink
-        >
+        <NuxtLink to="/auth/login" class="text-(--c-brand) underline">
+          Inicia Sesión
+        </NuxtLink>
       </p>
     </template>
   </NuxtLayout>
