@@ -45,7 +45,7 @@ const links = [
 
             <div class="flex items-center justify-center w-full sm:w-auto">
               <NuxtLink
-                to="/login"
+                to="/auth/login"
                 class="bg-(--c-brand) text-(--c-text) text-md font-bold px-2 rounded-lg"
               >
                 Inicia Sesión

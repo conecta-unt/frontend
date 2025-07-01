@@ -18,7 +18,7 @@ useSeoMeta({
 
     <template #links>
       <NuxtLink
-        to="/registrar"
+        to="/auth/cuenta/registrate"
         class="bg-(--c-brand) text-(--c-text) text-lg font-bold py-1 px-4 rounded-lg"
       >
         Regístrate
