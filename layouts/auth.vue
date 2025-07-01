@@ -16,10 +16,10 @@ useSeoMeta({ title: "Registrate | ConectaUNT" });
     />
 
     <section
-      class="w-full z-10 py-6 px-4 flex flex-col items-center justify-center"
+      class="w-full z-10 py-16 px-4 flex flex-col items-center justify-center"
     >
       <Glass
-        class="flex flex-col items-center justify-center gap-4 py-4 px-2 w-full max-w-[380px]"
+        class="flex flex-col items-center justify-center gap-4 py-4 px-6 w-full max-w-[380px]"
       >
         <NuxtImg src="/images/logo.png" width="180" height="180" />
 
