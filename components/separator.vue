@@ -2,6 +2,8 @@
 interface Props {
   bg?: string;
   bgBefore?: string;
+  containerClasses?: string;
+  contentClasses?: string;
 }
 withDefaults(defineProps<Props>(), {
   bg: "var(--c-bg)",
@@ -10,8 +12,8 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="Separator">
-    <div class="content">
+  <div class="Separator" :class="containerClasses">
+    <div class="content" :class="contentClasses">
       <slot />
     </div>
   </div>

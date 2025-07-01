@@ -12,7 +12,7 @@ const props = defineProps<Props>();
 
 const id = useId();
 
-const model = defineModel("model");
+const model = defineModel();
 
 onMounted(() => {
   if (props.placeholder) model.value = undefined;
@@ -30,7 +30,7 @@ onMounted(() => {
       :name="name"
       :id="id"
       :data-placeholder="placeholder !== undefined"
-      class="outline-1 outline-white rounded-lg p-2 w-full"
+      class="outline-1 outline-white rounded-lg p-2 w-full focus:outline-(--c-brand)"
       :class="{
         'text-gray-300': model === undefined,
         'text-white': model,
