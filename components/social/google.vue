@@ -1,4 +1,9 @@
 <script setup lang="ts">
+interface Props {
+  role?: string;
+}
+const props = defineProps<Props>();
+
 import { googleSdkLoaded } from "vue3-google-login";
 import { BACKEND_URL, FRONTEND_URL } from "~/config/api";
 import { GOOGLE_CLIENT_ID } from "~/config/social";
@@ -6,11 +11,15 @@ import { GOOGLE_CLIENT_ID } from "~/config/social";
 const sendCodeToBackend = async (code: string) => {
   const backendUrl = new URL(`${BACKEND_URL}/api/v1/auth/social/google`);
   backendUrl.searchParams.set("code", code);
-  backendUrl.searchParams.set("redirect-url", `${FRONTEND_URL}/auth/login`);
+  backendUrl.searchParams.set(
+    "redirect-url",
+    `${FRONTEND_URL}/auth/account/confirm`
+  );
   backendUrl.searchParams.set(
     "redirect-error-url",
-    `${FRONTEND_URL}/auth/login`
+    `${FRONTEND_URL}/auth/account/register`
   );
+  if (props.role) backendUrl.searchParams.set("role", props.role);
 
   window.location.href = backendUrl.toString();
 };

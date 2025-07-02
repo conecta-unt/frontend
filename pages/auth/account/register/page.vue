@@ -23,7 +23,7 @@ const showInputs = computed(() => {
     />
 
     <template v-if="role">
-      <SocialGoogle>Continuar con Google</SocialGoogle>
+      <SocialGoogle :role="role">Continuar con Google</SocialGoogle>
 
       <p v-show="!showInputs" class="text-white">
         Usa tu cuenta <span class="text-(--c-brand)">unitru</span>
