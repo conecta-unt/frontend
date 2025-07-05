@@ -22,17 +22,22 @@ const showInputs = computed(() => {
       ]"
     />
 
-    <template v-if="role">
-      <SocialGoogle :role="role">Continuar con Google</SocialGoogle>
+    <!-- <template v-if="role"> -->
+    <SocialGoogle :role="role">Continuar con Google</SocialGoogle>
 
-      <p v-show="!showInputs" class="text-white">
-        Usa tu cuenta <span class="text-(--c-brand)">unitru</span>
-      </p>
+    <p v-show="role && !showInputs" class="text-white">
+      Usa tu cuenta <span class="text-(--c-brand)">unitru</span>
+    </p>
 
-      <template v-if="showInputs">
-        <Separator content-classes="rounded-full">o</Separator>
-      </template>
-    </template>
+    <!-- <template v-if="showInputs"> -->
+    <Separator content-classes="rounded-full">o</Separator>
+
+    <FormInputAvailability
+      label="Nombre de usuario"
+      url-path="/user/info/find-username"
+    />
+    <!-- </template> -->
+    <!-- </template> -->
 
     <template #footer>
       <p class="text-white">
