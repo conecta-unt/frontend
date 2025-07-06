@@ -16,16 +16,19 @@ const nameUserSchema = z
 
 <template>
   <NuxtLayout name="auth" title="Crear cuenta">
-    <FormInputSelector
+    <InputSelector
       v-model="role"
       label="¿Quién eres?"
       placeholder="Selecciona tu rol"
+      :label-props="{ class: 'text-white' }"
+      :input-props="{ class: 'text-white' }"
       :options="[
         { value: 'individual_client', text: 'Cliente Independiente' },
         { value: 'bussines_client', text: 'Empresa' },
         { value: 'teacher', text: 'Docente' },
         { value: 'student', text: 'Estudiante' },
       ]"
+      class="w-full px-4"
     />
 
     <!-- <template v-if="role"> -->
