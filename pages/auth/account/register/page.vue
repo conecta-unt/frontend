@@ -43,7 +43,7 @@ const isValidData = computed(() => {
   return result.success;
 });
 
-const submit = () => {
+const submit = async () => {
   console.log(data);
 };
 </script>
@@ -89,6 +89,7 @@ const submit = () => {
             :schema="usernameSchema"
             url="/user/info/find-username"
           />
+
           <InputText
             class="w-full px-4"
             label="Nombres"
@@ -99,6 +100,7 @@ const submit = () => {
             name="firstname"
             :schema="nameUserSchema"
           />
+
           <InputText
             class="w-full px-4"
             label="Apellidos"
@@ -109,6 +111,7 @@ const submit = () => {
             name="lastname"
             :schema="nameUserSchema"
           />
+
           <InputText
             class="w-full px-4"
             label="Correo Electrónico"
@@ -119,6 +122,7 @@ const submit = () => {
             name="email"
             :schema="emailSchema"
           />
+
           <InputPassword
             class="w-full px-4"
             label="Contraseña"
@@ -128,10 +132,10 @@ const submit = () => {
             v-model="data.password"
             name="password"
           />
+
+          <Button :disabled="!isValidData">Crear cuenta</Button>
         </template>
       </template>
-
-      <Button :disabled="!isValidData">Crear cuenta</Button>
     </form>
 
     <template #footer>
