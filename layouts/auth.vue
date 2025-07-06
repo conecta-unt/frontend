@@ -10,7 +10,7 @@ useSeoMeta({ title: "Registrate | ConectaUNT" });
 <template>
   <main class="relative flex flex-col min-h-screen w-full bg-(--c-text)">
     <NuxtImg
-      class="absolute w-full h-full top-0 left-0 object-cover opacity-30 -z-0 select-none"
+      class="fixed w-full h-full top-0 left-0 object-cover opacity-30 -z-0 select-none"
       src="/images/background.jpg"
       alt="Background"
     />
