@@ -14,7 +14,6 @@ const {
   id,
   isFocused,
   error,
-  focusInput,
   onfocusin,
   onfocusout,
 } = useInputBase(props);
@@ -36,9 +35,7 @@ const {
           'outline-(--c-error)': error,
         }"
       >
-        <div v-if="$slots.prefixIcon">
-          <slot name="prefix-icon" />
-        </div>
+        <slot name="prefix-icon" />
 
         <slot name="prefix" />
 
@@ -63,9 +60,7 @@ const {
 
         <slot name="suffix" />
 
-        <div v-if="$slots.suffixIcon">
-          <slot name="suffix-icon" />
-        </div>
+        <slot name="suffix-icon" />
       </div>
     </div>
 

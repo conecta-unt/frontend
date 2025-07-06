@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import type { InputBaseProps } from "../base/base.composable";
-import {
-  useValidationInput,
-  type ValidationSchema,
-} from "../composables/use-validation.composable.";
+import { useValidationInput } from "../composables/use-validation.composable.";
+import type { InputTextProps } from "./types";
 
-interface Props extends InputBaseProps {
-  schema?: ValidationSchema;
-  showAllErrors?: boolean;
-  showErrorBullets?: boolean;
-}
-const props = defineProps<Props>();
+const props = defineProps<InputTextProps>();
 const model = defineModel({ default: "" });
 
 const { error, issues, validate } = useValidationInput({
@@ -29,19 +21,19 @@ const { error, issues, validate } = useValidationInput({
     :error="error"
   >
     <template #label="{ id }">
-      <slot name="label" :for="id" />
+      <slot name="label" :id="id" />
     </template>
 
     <template #prefix-icon><slot name="prefix-icon" /></template>
     <template #prefix><slot name="prefix" /></template>
 
     <template #default="{ type, ref, id, inputProps, onFocusin, onFocusout }">
-      <input
-        v-bind="inputProps"
-        v-model="model"
+      <slot
+        :type="type"
         :ref="ref"
         :id="id"
-        :type="type"
+        :inputProps="inputProps"
+        :validate="validate"
         @focusin="onFocusin"
         @focusout="
           () => {
@@ -49,8 +41,23 @@ const { error, issues, validate } = useValidationInput({
             validate(model);
           }
         "
-        class="w-full outline-none"
-      />
+      >
+        <input
+          v-bind="inputProps"
+          v-model="model"
+          :ref="ref"
+          :id="id"
+          :type="type"
+          @focusin="onFocusin"
+          @focusout="
+            () => {
+              onFocusout();
+              validate(model);
+            }
+          "
+          class="w-full outline-none"
+        />
+      </slot>
     </template>
 
     <template #suffix><slot name="suffix" /></template>
@@ -71,7 +78,12 @@ const { error, issues, validate } = useValidationInput({
           v-if="issues && showAllErrors"
           :class="{ 'list-inside list-disc': showErrorBullets }"
         >
-          <li v-for="issuee in issues" :key="issuee.code" class="text-red-500">
+          <li
+            v-for="issuee in issues"
+            :key="issuee.code"
+            v-bind="errorProps"
+            class="text-red-500"
+          >
             {{ issuee.message }}
           </li>
         </ul>

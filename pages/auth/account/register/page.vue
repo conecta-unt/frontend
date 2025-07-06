@@ -86,6 +86,14 @@ const usernameSchema = z
       name="email"
       :schema="emailSchema"
     />
+    <InputPassword
+      class="w-full px-4"
+      label="Contraseña"
+      :label-props="{ class: 'text-white' }"
+      :input-props="{ class: 'text-white' }"
+      :error-props="{ class: 'text-red-100' }"
+      name="password"
+    />
     <!-- </template> -->
     <!-- </template> -->
 
