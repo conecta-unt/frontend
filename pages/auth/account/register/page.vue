@@ -12,6 +12,12 @@ const nameUserSchema = z
   .string()
   .min(1, "Debe contener al menos 1 caractér.")
   .max(50, "No debe contener más de 50 caracteres.");
+
+const emailSchema = z.email("Ingrese una dirección de correo válido.");
+const usernameSchema = z
+  .string()
+  .min(3, "Debe contener al menos 3 caracteres.")
+  .max(32, "Debe contener máximo 32 caracteres.");
 </script>
 
 <template>
@@ -32,25 +38,33 @@ const nameUserSchema = z
     />
 
     <!-- <template v-if="role"> -->
-    <SocialGoogle :role="role">Continuar con Google</SocialGoogle>
+    <div class="flex flex-col w-full items-center gap-0.5">
+      <SocialGoogle :role="role">Continuar con Google</SocialGoogle>
 
-    <p v-show="role && !showInputs" class="text-white">
-      Usa tu cuenta <span class="text-(--c-brand)">unitru</span>
-    </p>
+      <p v-show="role && !showInputs" class="text-white">
+        Usa tu cuenta <span class="text-(--c-brand)">unitru</span>
+      </p>
+    </div>
 
     <!-- <template v-if="showInputs"> -->
     <Separator content-classes="rounded-full">o</Separator>
 
-    <!-- <FormInputAvailability
+    <InputAvailability
+      class="w-full px-4"
       label="Nombre de usuario"
+      :label-props="{ class: 'text-white' }"
+      :input-props="{ class: 'text-white' }"
+      :error-props="{ class: 'text-red-200' }"
       name="username"
-      url-path="/user/info/find-username"
-    /> -->
+      :schema="usernameSchema"
+      url="/user/info/find-username"
+    />
     <InputText
       class="w-full px-4"
       label="Nombres"
       :label-props="{ class: 'text-white' }"
       :input-props="{ class: 'text-white' }"
+      :error-props="{ class: 'text-red-200' }"
       name="firstname"
       :schema="nameUserSchema"
     />
@@ -59,8 +73,18 @@ const nameUserSchema = z
       label="Apellidos"
       :label-props="{ class: 'text-white' }"
       :input-props="{ class: 'text-white' }"
+      :error-props="{ class: 'text-red-200' }"
       name="lastname"
       :schema="nameUserSchema"
+    />
+    <InputText
+      class="w-full px-4"
+      label="Correo Electrónico"
+      :label-props="{ class: 'text-white' }"
+      :input-props="{ class: 'text-white' }"
+      :error-props="{ class: 'text-red-200' }"
+      name="email"
+      :schema="emailSchema"
     />
     <!-- </template> -->
     <!-- </template> -->

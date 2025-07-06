@@ -1,38 +1,33 @@
 <script setup lang="ts">
-import * as z from "zod/v4";
-import type { $ZodIssue } from "zod/v4/core";
 import type { InputBaseProps } from "../base/base.composable";
+import {
+  useValidationInput,
+  type ValidationSchema,
+} from "../composables/use-validation.composable.";
 
 interface Props extends InputBaseProps {
-  schema?: z.ZodString;
+  schema?: ValidationSchema;
   showAllErrors?: boolean;
   showErrorBullets?: boolean;
 }
 const props = defineProps<Props>();
-
 const model = defineModel({ default: "" });
-const issues = ref<$ZodIssue[]>();
 
-const error = computed(() => {
-  if (!issues.value || !issues.value.length) return undefined;
-  return issues.value[0].message;
+const { error, issues, validate } = useValidationInput({
+  schema: props.schema,
 });
-
-const validate = () => {
-  if (!props.schema) return;
-
-  const result = props.schema.safeParse(model.value);
-
-  if (!result.success) {
-    issues.value = result.error.issues;
-  } else {
-    issues.value = undefined;
-  }
-};
 </script>
 
 <template>
-  <InputBase v-bind="props">
+  <InputBase
+    v-bind="{
+      ...props,
+      showAllErrors: undefined,
+      showErrorBullets: undefined,
+      modelValue: undefined,
+    }"
+    :error="error"
+  >
     <template #label="{ id }">
       <slot name="label" :for="id" />
     </template>
@@ -51,7 +46,7 @@ const validate = () => {
         @focusout="
           () => {
             onFocusout();
-            validate();
+            validate(model);
           }
         "
         class="w-full outline-none"

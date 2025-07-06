@@ -30,12 +30,11 @@ const {
       </slot>
 
       <div
-        class="flex items-center gap-1 outline-1 outline-(--c-border) rounded-lg p-2 w-full cursor-text"
+        class="flex items-center gap-1 outline-1 outline-(--c-border) rounded-lg p-2 w-full"
         :class="{
           'outline-(--c-border-hover)': isFocused,
           'outline-(--c-error)': error,
         }"
-        @click="focusInput"
       >
         <div v-if="$slots.prefixIcon">
           <slot name="prefix-icon" />
