@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { z } from "zod/v4";
+import { passwordSchema } from "~/schemas";
 import type { InputTextProps } from "../text/types";
 
 interface Props extends InputTextProps {
@@ -19,22 +19,6 @@ const toogleInputType = () => {
   if (inputType.value === "password") inputType.value = "text";
   else inputType.value = "password";
 };
-
-const passwordSchema = z
-  .string()
-  .min(8, { message: "La contraseña debe tener al menos 8 caracteres" })
-  .refine((val) => /[a-z]/.test(val), {
-    message: "Debe contener al menos una letra minúscula",
-  })
-  .refine((val) => /[A-Z]/.test(val), {
-    message: "Debe contener al menos una letra mayúscula",
-  })
-  .refine((val) => /\d/.test(val), {
-    message: "Debe contener al menos un número",
-  })
-  .refine((val) => /[@$!%*?&]/.test(val), {
-    message: "Debe contener al menos un carácter especial (@$!%*?&)",
-  });
 </script>
 
 <template>

@@ -43,11 +43,8 @@ const login = () => {
 </script>
 
 <template>
-  <button
-    class="flex items-center justify-center p-2 gap-4 bg-(--c-brand) outline-none w-full rounded-3xl cursor-pointer"
-    @click="login"
-  >
+  <Button @click="login" class="w-full" type="button">
     <Icon name="mdi:google" />
     <span><slot /></span>
-  </button>
+  </Button>
 </template>
