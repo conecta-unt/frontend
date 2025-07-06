@@ -1,3 +1,14 @@
+<script setup lang="ts">
+interface Props {
+  id?: string;
+  label?: string;
+  name?: string;
+}
+const props = defineProps<Props>();
+
+const id = props.id ? props.id : useId();
+</script>
+
 <template>
   <!-- Outer -->
   <div class="flex flex-col w-full gap-0.5">
@@ -5,7 +16,9 @@
     <div class="flex flex-col w-full gap-1">
       <!-- Label -->
       <div v-if="$slots.label">
-        <slot name="label" />
+        <slot name="label">
+          <label v-if="label" :for="id" class="text-black">{{ label }}</label>
+        </slot>
       </div>
 
       <!-- Inner -->
@@ -21,6 +34,10 @@
         </div>
 
         <!-- Input -->
+        <!-- Se te ocurrio q podemos tener un input por defecto,
+        y pasarle argumentos como el schema etc, y hacer aqui las
+        respectivas validaciones y estilado -->
+        <!-- A partir de esto, se puede crear otros componentes con lógica adicional -->
         <div v-if="$slots.default">
           <slot />
         </div>

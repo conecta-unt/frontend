@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import * as z from "zod/v4";
 const role = ref<string>();
 
 const showInputs = computed(() => {
@@ -6,6 +7,11 @@ const showInputs = computed(() => {
     return ["individual_client", "bussines_client"].includes(role.value);
   else return false;
 });
+
+const nameUserSchema = z
+  .string()
+  .min(1, "Debe contener al menos 1 caractér.")
+  .max(50, "No debe contener más de 50 caracteres.");
 </script>
 
 <template>
@@ -32,9 +38,26 @@ const showInputs = computed(() => {
     <!-- <template v-if="showInputs"> -->
     <Separator content-classes="rounded-full">o</Separator>
 
-    <FormInputAvailability
+    <!-- <FormInputAvailability
       label="Nombre de usuario"
+      name="username"
       url-path="/user/info/find-username"
+    /> -->
+    <InputText
+      class="w-full px-4"
+      label="Nombres"
+      :label-props="{ class: 'text-white' }"
+      :input-props="{ class: 'text-white' }"
+      name="firstname"
+      :schema="nameUserSchema"
+    />
+    <InputText
+      class="w-full px-4"
+      label="Apellidos"
+      :label-props="{ class: 'text-white' }"
+      :input-props="{ class: 'text-white' }"
+      name="lastname"
+      :schema="nameUserSchema"
     />
     <!-- </template> -->
     <!-- </template> -->
