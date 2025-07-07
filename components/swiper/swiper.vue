@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { ArrowLeftCircleIcon } from "@heroicons/vue/24/solid";
 
 interface SwiperProps {
-  list: any[]; // si sabes qué tipo es cada item, ponlo en vez de any[]
+  list: any[];
   index: number;
 }
 
@@ -25,14 +25,19 @@ const swiperStyle = computed(() => {
 </script>
 
 <template>
-  <div class="swiper-container">
+  <div
+    class="relative border border-gray-300 w-full max-w-3xl mx-auto h-80 overflow-hidden rounded-lg"
+  >
     <ul
       ref="container"
-      class="swiper-wrapper"
+      class="flex h-full transition-transform duration-300 ease-in-out"
       :style="swiperStyle"
-      data-test="swiper-wrapper"
     >
-      <li v-for="(item, idx) in props.list" :key="idx" class="h-full">
+      <li
+        v-for="(item, idx) in props.list"
+        :key="idx"
+        class="flex-none w-full h-full"
+      >
         <slot :item="item" />
       </li>
     </ul>
@@ -41,8 +46,7 @@ const swiperStyle = computed(() => {
     <button
       v-if="props.index !== 0"
       @click="emit('change', props.index - 1)"
-      class="toggle-btn prev"
-      data-test="prev-btn"
+      class="opacity-80 cursor-pointer text-white absolute z-10 w-14 h-14 transition-colors duration-300 top-1/2 transform -translate-y-1/2 hover:opacity-100 left-2"
     >
       <ArrowLeftCircleIcon />
     </button>
@@ -50,8 +54,7 @@ const swiperStyle = computed(() => {
     <button
       v-if="props.index !== props.list.length - 1"
       @click="emit('change', props.index + 1)"
-      class="toggle-btn next"
-      data-test="next-btn"
+      class="opacity-80 cursor-pointer text-white absolute z-10 w-14 h-14 transition-colors duration-300 top-1/2 transform -translate-y-1/2 hover:opacity-100 right-2 rotate-180"
     >
       <ArrowLeftCircleIcon />
     </button>

@@ -34,4 +34,9 @@ const props = defineProps<Props>();
 .swiper-image {
   @apply w-full h-full object-cover;
 }
+
+.swiper-slide-container .text-container {
+  background: transparent !important;
+  box-shadow: none !important;
+}
 </style>
