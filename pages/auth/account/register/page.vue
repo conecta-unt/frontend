@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import axios from "axios";
 import * as z from "zod/v4";
+import { API_URL, FRONTEND_URL } from "~/config/api";
 import {
   emailSchema,
   nameUserSchema,
@@ -25,7 +27,7 @@ const data = reactive<{
 
 const showInputs = computed(() => {
   if (data.role)
-    return ["individual_client", "bussines_client"].includes(data.role);
+    return ["individual_client", "business_client"].includes(data.role);
   else return false;
 });
 
@@ -43,14 +45,69 @@ const isValidData = computed(() => {
   return result.success;
 });
 
+const information = ref({
+  text: "",
+  success: true,
+});
+
 const submit = async () => {
-  console.log(data);
+  const url = new URL(`${API_URL}/auth/account/create`);
+  url.searchParams.set(
+    "redirect-url",
+    `${FRONTEND_URL}/auth/cuenta/confirmacion`
+  );
+
+  try {
+    await axios.post(url.toString(), toValue(data));
+    information.value = {
+      text: "Se ha enviado un correo para confirmar su cuenta.",
+      success: true,
+    };
+    data.role = undefined;
+    data.username = undefined;
+    data.firstname = undefined;
+    data.lastname = undefined;
+    data.email = undefined;
+    data.password = undefined;
+  } catch (error: unknown) {
+    information.value.success = false;
+
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 400) {
+        information.value.text =
+          "Los datos enviados son invalidos. Revise los datos antes de enviar.";
+      } else if (error.response?.status === 409) {
+        information.value.text = "El correo ya está en uso.";
+      } else {
+        information.value.text =
+          "Oops, hubo un error inesperado. Intetelo más tarde o contactese con nosotros.";
+      }
+    } else {
+      information.value.text =
+        "Oops, hubo un error inesperado. Intetelo más tarde o contactese con nosotros.";
+    }
+
+    data.username = undefined;
+    data.email = undefined;
+    data.password = undefined;
+  }
 };
 </script>
 
 <template>
   <NuxtLayout name="auth" title="Crear cuenta">
     <form @submit.prevent="submit" class="flex flex-col gap-4 w-full">
+      <p
+        v-if="information.text"
+        class="text-lg"
+        :class="{
+          'text-green-500': information.success,
+          'text-red-400': !information.success,
+        }"
+      >
+        {{ information.text }}
+      </p>
+
       <InputSelector
         v-model="data.role"
         label="¿Quién eres?"
@@ -59,7 +116,7 @@ const submit = async () => {
         :input-props="{ class: 'text-white' }"
         :options="[
           { value: 'individual_client', text: 'Cliente Independiente' },
-          { value: 'bussines_client', text: 'Empresa' },
+          { value: 'business_client', text: 'Empresa' },
           { value: 'teacher', text: 'Docente' },
           { value: 'student', text: 'Estudiante' },
         ]"

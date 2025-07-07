@@ -32,8 +32,10 @@ const handler = async (value: string) => {
     inputError.value = undefined;
 
     try {
-      await axios.get<boolean>(`${API_URL}${props.url}?q=${value}`);
-      isAvailableValue.value = false;
+      const result = await axios.get<boolean>(
+        `${API_URL}${props.url}?q=${value}`
+      );
+      isAvailableValue.value = !result.data;
     } catch (error) {
       console.error("Error checking availability:", error);
       isAvailableValue.value = true;
