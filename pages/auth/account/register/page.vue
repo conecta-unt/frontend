@@ -9,6 +9,8 @@ import {
   usernameSchema,
 } from "~/schemas";
 
+const route = useRoute();
+
 const data = reactive<{
   role?: string;
   username?: string;
@@ -92,6 +94,13 @@ const submit = async () => {
     data.password = undefined;
   }
 };
+
+onMounted(() => {
+  if (route.query.error === "provider_error")
+    information.value.text =
+      "Está intentando iniciar sesión con otro proveedor. Intente iniciar sesión con el método con el que creó su cuenta.";
+  information.value.success = false;
+});
 </script>
 
 <template>
