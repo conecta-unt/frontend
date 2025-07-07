@@ -29,7 +29,7 @@ const data = reactive<{
 
 const showInputs = computed(() => {
   if (data.role)
-    return ["individual_client", "business_client"].includes(data.role);
+    return ["individual_client", "bussines_client"].includes(data.role);
   else return false;
 });
 
@@ -125,7 +125,7 @@ onMounted(() => {
         :input-props="{ class: 'text-white' }"
         :options="[
           { value: 'individual_client', text: 'Cliente Independiente' },
-          { value: 'business_client', text: 'Empresa' },
+          { value: 'bussines_client', text: 'Empresa' },
           { value: 'teacher', text: 'Docente' },
           { value: 'student', text: 'Estudiante' },
         ]"
