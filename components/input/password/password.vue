@@ -6,8 +6,11 @@ interface Props extends InputTextProps {
   eyeProps?: {
     class?: string;
   };
+  validate?: boolean;
 }
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  validate: true,
+});
 
 const model = defineModel({ default: "" });
 const inputType = ref<"password" | "text">("password");
@@ -25,7 +28,7 @@ const toogleInputType = () => {
   <InputText
     v-bind="props"
     v-model="model"
-    :schema="passwordSchema"
+    :schema="validate ? passwordSchema : undefined"
     :type="inputType"
     show-all-errors
     show-error-bullets
