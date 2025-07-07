@@ -31,7 +31,7 @@ const logout = () => {
         <nav class="desktop-nav">
           <ul>
             <li>
-              <NuxtLink to="/">
+              <NuxtLink to="/app">
                 <Icon name="mdi:home" class="icon" />
                 Inicio
               </NuxtLink>

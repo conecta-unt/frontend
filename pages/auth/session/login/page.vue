@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import axios from "axios";
 import z from "zod/v4";
-import { API_URL } from "~/config/api";
+import { API_URL, FRONTEND_URL } from "~/config/api";
 import { emailSchema } from "~/schemas";
 
 const router = useRouter();
+const { $axios } = useNuxtApp();
 
 const data = reactive<{
   email?: string;
@@ -30,8 +30,11 @@ const information = ref({
 });
 
 const submit = async () => {
+  const url = new URL(`${API_URL}/auth/session/login`);
+  url.searchParams.set("redirect-url", `${FRONTEND_URL}/app`);
+
   try {
-    await axios.post(`${API_URL}/auth/session/login`, toValue(data));
+    await $axios.post(url.toString(), toValue(data));
     data.email = undefined;
     data.password = undefined;
     router.push("/app");
