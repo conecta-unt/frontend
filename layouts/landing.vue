@@ -72,6 +72,10 @@ const links = [
     </section>
   </main>
 
+  <div v-if="$slots.default" class="relative z-10 w-full">
+    <slot />
+  </div>
+
   <footer
     class="flex flex-col md:flex-row items-center justify-center w-full bg-(--c-primary) py-8 px-4 text-(--c-bg) gap-2 md:gap-4"
   >
