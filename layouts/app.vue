@@ -2,6 +2,11 @@
 import { ref, computed } from "vue";
 import type { UserProfileI } from "~/types/user";
 
+interface Props {
+  roles?: string[];
+}
+const props = defineProps<Props>();
+
 const { $axios } = useNuxtApp();
 const router = useRouter();
 
@@ -34,7 +39,11 @@ const getUserProfile = async () => {
 };
 
 onMounted(async () => {
-  if (!user.value) await getUserProfile();
+  if (!user.value) {
+    await getUserProfile();
+  }
+  if (user.value && props.roles && !props.roles.includes(user.value.role))
+    navigateTo("/app");
 });
 </script>
 
@@ -60,7 +69,7 @@ onMounted(async () => {
               </NuxtLink>
             </li>
             <li v-if="showOffersLink">
-              <NuxtLink to="/offers">
+              <NuxtLink to="/app/mis-ofertas">
                 <Icon name="mdi:briefcase" class="icon" />
                 Mis ofertas
               </NuxtLink>
@@ -92,7 +101,7 @@ onMounted(async () => {
           </button>
 
           <div v-if="isAvatarMenuOpen" class="avatar-dropdown">
-            <NuxtLink to="/app/profile" @click="isAvatarMenuOpen = false">
+            <NuxtLink to="/app/perfil" @click="isAvatarMenuOpen = false">
               <Icon name="mdi:user" class="icon" />
               Perfil
             </NuxtLink>
@@ -128,7 +137,7 @@ onMounted(async () => {
             </NuxtLink>
           </li>
           <li v-if="showOffersLink" @click="isMobileMenuOpen = false">
-            <NuxtLink to="/offers">
+            <NuxtLink to="/app/mis-ofertas">
               <Icon name="mdi:briefcase" class="icon" />
               Mis ofertas
             </NuxtLink>
@@ -140,7 +149,7 @@ onMounted(async () => {
             </NuxtLink>
           </li>
           <li @click="isMobileMenuOpen = false">
-            <NuxtLink to="/app/profile">
+            <NuxtLink to="/app/perfil">
               <Icon name="mdi:user" class="icon" />
               Perfil
             </NuxtLink>
