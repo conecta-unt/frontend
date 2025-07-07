@@ -11,9 +11,13 @@
   --c-primary-h: #001a4d;
   --c-secondary: #dae3f3;
   --c-border: #d9d9d9;
+  --c-border-hover: #ababab;
   --c-highlight: #0d3880;
 
   --c-brand: #fff000;
+  --c-brand-hover: #dfd113;
+  --c-brand-disabled: #9f9726;
+  --c-error: #ff0000;
 
   /* FONTS */
   --ff-heading: "M PLUS Rounded 1c", sans-serif;
@@ -30,6 +34,7 @@
   --c-primary-h: #5c7ac1;
   --c-secondary: #2e3e5b;
   --c-border: #3b3f43;
+  --c-border-hover: #737a82;
   --c-highlight: #1c4ca2;
 }
 
