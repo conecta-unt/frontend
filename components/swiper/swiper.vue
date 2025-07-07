@@ -37,8 +37,6 @@ const swiperStyle = computed(() => {
       </li>
     </ul>
 
-    
-
     <!-- pre btn -->
     <button
       v-if="props.index !== 0"

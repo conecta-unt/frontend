@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from "vue";
 
 const props = defineProps({
   value: {
     type: Number,
-    required: true
+    required: true,
   },
   duration: {
     type: Number,
-    default: 1000
-  }
+    default: 1000,
+  },
 });
 
 const count = ref(0);
@@ -26,7 +26,7 @@ const animate = () => {
     if (!startTime) startTime = timestamp;
     const progress = Math.min((timestamp - startTime) / duration, 1);
     count.value = Math.floor(progress * (end - start) + start);
-    
+
     if (progress < 1) {
       requestAnimationFrame(step);
     }
@@ -36,14 +36,17 @@ const animate = () => {
 };
 
 onMounted(() => {
-  observer.value = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animate();
-        observer.value?.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+  observer.value = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animate();
+          observer.value?.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
 
   if (element.value) {
     observer.value.observe(element.value);

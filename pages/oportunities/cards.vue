@@ -10,29 +10,38 @@ defineProps({
   remuneracion: String,
   badgeColor: {
     type: String,
-    default: 'bg-green-500',
+    default: "bg-green-500",
   },
 });
 </script>
 
 <template>
-  <div class="flex flex-col bg-white rounded-2xl shadow-md w-full sm:w-[47%] lg:w-[31%] hover:-translate-y-1 hover:shadow-lg transition duration-300">
+  <div
+    class="flex flex-col bg-white rounded-2xl shadow-md w-full sm:w-[47%] lg:w-[31%] hover:-translate-y-1 hover:shadow-lg transition duration-300"
+  >
     <div class="px-6 py-4 flex justify-between items-start">
       <div class="font-extrabold text-xl text-gray-900 leading-snug">
         {{ titulo }}
       </div>
-      <span :class="`${badgeColor} text-white text-xs font-medium px-3 py-1 rounded-full`">
+      <span
+        :class="`${badgeColor} text-white text-xs font-medium px-3 py-1 rounded-full`"
+      >
         {{ tipo }}
       </span>
-
     </div>
 
     <div class="px-6 py-3 flex items-center gap-3 border-t border-gray-200">
-      <img :src="empresaLogo" alt="Empresa" class="w-8 h-8 rounded-full object-cover" />
+      <img
+        :src="empresaLogo"
+        alt="Empresa"
+        class="w-8 h-8 rounded-full object-cover"
+      />
       <span class="text-gray-700 text-sm">{{ empresaNombre }}</span>
     </div>
 
-    <div class="px-6 py-4 text-gray-700 text-sm leading-relaxed border-t border-gray-200">
+    <div
+      class="px-6 py-4 text-gray-700 text-sm leading-relaxed border-t border-gray-200"
+    >
       {{ descripcion }}
     </div>
 
