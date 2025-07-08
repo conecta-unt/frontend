@@ -177,6 +177,7 @@ onMounted(async () => {
               alt="Foto de perfil"
             />
             <div
+              v-if="user.username === profile.username"
               class="absolute top-[-100%] lef-0 w-full h-full flex items-center justify-center bg-gray-700 cursor-pointer"
               @click="handleOpenFileSelector"
             >
