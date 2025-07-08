@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "#imports";
 import { API_URL } from "~/config/api";
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   const router = useRouter();
 
   const instance = axios.create({
@@ -38,7 +38,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         isRefreshing = true;
 
         try {
-          await instance.get("/auth/session/refresh-token");
+          await axios.get(`${API_URL}/auth/session/refresh-token`, {
+            withCredentials: true,
+          });
 
           isRefreshing = false;
           processQueue(null);

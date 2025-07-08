@@ -36,6 +36,14 @@ const logout = async () => {
 const getUserProfile = async () => {
   const result = await $axios.get<UserProfileI>("/user/info/profile");
   user.value = result.data;
+
+  if (user.value && !user.value.profileImage) {
+    const name = `${user.value.firstname} ${user.value.lastname}`.replace(
+      " ",
+      "+"
+    );
+    user.value.profileImage = `https://ui-avatars.com/api/?name=${name}&size=60&background=random&bold=true`;
+  }
 };
 
 onMounted(async () => {
@@ -91,12 +99,11 @@ onMounted(async () => {
             aria-label="Menú de usuario"
           >
             <div class="avatar-placeholder">
-              <NuxtImg
-                v-if="user.profileImage"
-                :src="user.profileImage"
+              <img
+                :src="user.profileImage || undefined"
+                class="rounded-full"
                 alt="Foto de perfil"
               />
-              <Icon v-else name="mdi:user" class="avatar-icon" />
             </div>
           </button>
 
@@ -348,8 +355,8 @@ onMounted(async () => {
   display: none;
   background-color: var(--c-surface);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: -100%;
+  position: fixed;
+  top: 78px;
   left: 0;
   right: 0;
   z-index: 99;

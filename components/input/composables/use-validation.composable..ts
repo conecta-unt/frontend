@@ -1,7 +1,11 @@
 import * as z from "zod/v4";
 import type { $ZodIssue } from "zod/v4/core";
 
-export type ValidationSchema = z.ZodString | z.ZodEmail;
+export type ValidationSchema =
+  | z.ZodString
+  | z.ZodEmail
+  | z.ZodOptional<z.ZodString>
+  | z.ZodOptional<z.ZodEmail>;
 
 export interface ValidationInputProps {
   schema?: ValidationSchema;

@@ -4,7 +4,10 @@ export interface UserProfileI {
   email: string;
   provider: string;
   role: string;
-  firsname: string;
-  lastname: string;
-  profileImage: null;
+  firstname: string | null;
+  lastname: string | null;
+  profileImage: string | null;
+  major: string | null;
+  area: string | null;
+  bio: string | null;
 }

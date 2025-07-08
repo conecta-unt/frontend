@@ -100,10 +100,15 @@ const submit = async () => {
 };
 
 onMounted(() => {
-  if (route.query.error === "provider_error")
-    information.value.text =
-      "Está intentando iniciar sesión con otro proveedor. Intente iniciar sesión con el método con el que creó su cuenta.";
-  information.value.success = false;
+  const error = route.query.error;
+  if (error) {
+    if (error === "provider_error")
+      information.value.text =
+        "Está intentando iniciar sesión con otro proveedor. Intente iniciar sesión con el método con el que creó su cuenta.";
+    else if (error === "account_not_found")
+      information.value.text = "Debe crear una cuenta antes de iniciar sesión.";
+    information.value.success = false;
+  }
 });
 </script>
 
