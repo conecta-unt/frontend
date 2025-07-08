@@ -101,7 +101,8 @@ onMounted(async () => {
             <div class="avatar-placeholder">
               <img
                 :src="user.profileImage || undefined"
-                class="rounded-full"
+                width="60"
+                class="aspect-square object-cover rounded-full"
                 alt="Foto de perfil"
               />
             </div>
