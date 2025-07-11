@@ -1,28 +1,68 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import type { UserProfileI } from "~/types/user";
 
-// Rol hardcodeado (cambiar para probar diferentes vistas)
-const role = ref("student"); // Posibles valores: 'individual_client', 'business_client', 'teacher', 'student'
+interface Props {
+  roles?: string[];
+}
+const props = defineProps<Props>();
+
+const { $axios } = useNuxtApp();
+const router = useRouter();
+
+const user = useState<UserProfileI>("user");
 
 const showOffersLink = computed(() => {
-  return role.value === "individual_client" || role.value === "business_client";
+  return (
+    user.value?.role === "individual_client" ||
+    user.value?.role === "bussines_client"
+  );
 });
 
 const showApplicationsLink = computed(() => {
-  return role.value === "teacher" || role.value === "student";
+  return user.value?.role === "teacher" || user.value?.role === "student";
 });
 
 const isMobileMenuOpen = ref(false);
 const isAvatarMenuOpen = ref(false);
 
-const logout = () => {
-  alert("Sesión cerrada");
+const logout = async () => {
+  await $axios.get("/auth/session/logout");
   isAvatarMenuOpen.value = false;
+  router.clearRoutes();
+  router.push("");
 };
+
+const getUserProfile = async () => {
+  const result = await $axios.get<UserProfileI>("/user/info/profile");
+  user.value = result.data;
+
+  if (user.value && !user.value.profileImage) {
+    const name = `${user.value.firstname} ${user.value.lastname}`.replace(
+      " ",
+      "+"
+    );
+    user.value.profileImage = `https://ui-avatars.com/api/?name=${name}&size=60&background=random&bold=true`;
+  }
+};
+
+onMounted(async () => {
+  if (!user.value) {
+    await getUserProfile();
+  }
+  if (user.value && props.roles && !props.roles.includes(user.value.role))
+    navigateTo("/app");
+});
 </script>
 
 <template>
-  <div class="layout">
+  <div
+    v-if="!user"
+    class="flex w-full min-h-screen items-center justify-center"
+  >
+    <div class="loader"></div>
+  </div>
+  <div v-else class="layout">
     <header class="header">
       <div class="container">
         <NuxtLink to="/" class="logo"> Conecta UNT </NuxtLink>
@@ -31,13 +71,13 @@ const logout = () => {
         <nav class="desktop-nav">
           <ul>
             <li>
-              <NuxtLink to="/">
+              <NuxtLink to="/app">
                 <Icon name="mdi:home" class="icon" />
                 Inicio
               </NuxtLink>
             </li>
             <li v-if="showOffersLink">
-              <NuxtLink to="/offers">
+              <NuxtLink to="/app/mis-ofertas">
                 <Icon name="mdi:briefcase" class="icon" />
                 Mis ofertas
               </NuxtLink>
@@ -59,12 +99,17 @@ const logout = () => {
             aria-label="Menú de usuario"
           >
             <div class="avatar-placeholder">
-              <Icon name="mdi:user" class="avatar-icon" />
+              <img
+                :src="user.profileImage || undefined"
+                width="60"
+                class="aspect-square object-cover rounded-full"
+                alt="Foto de perfil"
+              />
             </div>
           </button>
 
           <div v-if="isAvatarMenuOpen" class="avatar-dropdown">
-            <NuxtLink to="/profile" @click="isAvatarMenuOpen = false">
+            <NuxtLink to="/app/perfil" @click="isAvatarMenuOpen = false">
               <Icon name="mdi:user" class="icon" />
               Perfil
             </NuxtLink>
@@ -100,7 +145,7 @@ const logout = () => {
             </NuxtLink>
           </li>
           <li v-if="showOffersLink" @click="isMobileMenuOpen = false">
-            <NuxtLink to="/offers">
+            <NuxtLink to="/app/mis-ofertas">
               <Icon name="mdi:briefcase" class="icon" />
               Mis ofertas
             </NuxtLink>
@@ -112,7 +157,7 @@ const logout = () => {
             </NuxtLink>
           </li>
           <li @click="isMobileMenuOpen = false">
-            <NuxtLink to="/profile">
+            <NuxtLink to="/app/perfil">
               <Icon name="mdi:user" class="icon" />
               Perfil
             </NuxtLink>
@@ -133,12 +178,35 @@ const logout = () => {
     </Transition>
 
     <main class="main-content">
-      <slot />
+      <slot :user="user" />
     </main>
   </div>
 </template>
 
 <style scoped>
+.loader {
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 30px;
+  display: inline-grid;
+}
+.loader:before,
+.loader:after {
+  content: "Cargando...";
+  grid-area: 1/1;
+  -webkit-mask: linear-gradient(90deg, #000 50%, #0000 0) 0 50%/2ch 100%;
+  animation: l11 1s infinite cubic-bezier(0.5, 220, 0.5, -220);
+}
+.loader:after {
+  -webkit-mask-position: 1ch 50%;
+  --s: -1;
+}
+@keyframes l11 {
+  100% {
+    transform: translateY(calc(var(--s, 1) * 0.1%));
+  }
+}
+
 .layout {
   min-height: 100vh;
   background-color: var(--c-bg);
@@ -288,8 +356,8 @@ const logout = () => {
   display: none;
   background-color: var(--c-surface);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: -100%;
+  position: fixed;
+  top: 78px;
   left: 0;
   right: 0;
   z-index: 99;

@@ -27,3 +27,21 @@ export const passwordSchema = z
   .refine((val) => /[@$!%*?&]/.test(val), {
     message: "Debe contener al menos un carácter especial (@$!%*?&)",
   });
+
+export const majorSchema = z
+  .string()
+  .min(3, { message: "La especialidad debe tener al menos 3 caracteres" })
+  .max(50, { message: "La especialidad no debe exceder los 50 caracteres" })
+  .optional();
+
+export const areaSchema = z
+  .string()
+  .min(1, { message: "El área no puede estar vacía" })
+  .max(100, { message: "El área no debe exceder los 100 caracteres" })
+  .optional();
+
+export const bioSchema = z
+  .string()
+  .min(1, { message: "La biografía no puede estar vacía" })
+  .max(1000, { message: "La biografía no debe exceder los 1000 caracteres" })
+  .optional();

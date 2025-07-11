@@ -29,7 +29,7 @@ const data = reactive<{
 
 const showInputs = computed(() => {
   if (data.role)
-    return ["individual_client", "business_client"].includes(data.role);
+    return ["individual_client", "bussines_client"].includes(data.role);
   else return false;
 });
 
@@ -60,7 +60,11 @@ const submit = async () => {
   );
 
   try {
-    await axios.post(url.toString(), toValue(data));
+    await axios.post(url.toString(), {
+      ...data,
+      lastname: data.role === "bussines_client" ? "any" : data.lastname,
+    });
+
     information.value = {
       text: "Se ha enviado un correo para confirmar su cuenta.",
       success: true,
@@ -96,10 +100,15 @@ const submit = async () => {
 };
 
 onMounted(() => {
-  if (route.query.error === "provider_error")
-    information.value.text =
-      "Está intentando iniciar sesión con otro proveedor. Intente iniciar sesión con el método con el que creó su cuenta.";
-  information.value.success = false;
+  const error = route.query.error;
+  if (error) {
+    if (error === "provider_error")
+      information.value.text =
+        "Está intentando iniciar sesión con otro proveedor. Intente iniciar sesión con el método con el que creó su cuenta.";
+    else if (error === "account_not_found")
+      information.value.text = "Debe crear una cuenta antes de iniciar sesión.";
+    information.value.success = false;
+  }
 });
 </script>
 
@@ -125,7 +134,7 @@ onMounted(() => {
         :input-props="{ class: 'text-white' }"
         :options="[
           { value: 'individual_client', text: 'Cliente Independiente' },
-          { value: 'business_client', text: 'Empresa' },
+          { value: 'bussines_client', text: 'Empresa' },
           { value: 'teacher', text: 'Docente' },
           { value: 'student', text: 'Estudiante' },
         ]"
@@ -156,27 +165,41 @@ onMounted(() => {
             url="/user/info/find-username"
           />
 
-          <InputText
-            class="w-full px-4"
-            label="Nombres"
-            :label-props="{ class: 'text-white' }"
-            :input-props="{ class: 'text-white' }"
-            :error-props="{ class: 'text-red-200' }"
-            v-model="data.firstname"
-            name="firstname"
-            :schema="nameUserSchema"
-          />
+          <template v-if="data.role !== 'bussines_client'">
+            <InputText
+              class="w-full px-4"
+              label="Nombres"
+              :label-props="{ class: 'text-white' }"
+              :input-props="{ class: 'text-white' }"
+              :error-props="{ class: 'text-red-200' }"
+              v-model="data.firstname"
+              name="firstname"
+              :schema="nameUserSchema"
+            />
 
-          <InputText
-            class="w-full px-4"
-            label="Apellidos"
-            :label-props="{ class: 'text-white' }"
-            :input-props="{ class: 'text-white' }"
-            :error-props="{ class: 'text-red-200' }"
-            v-model="data.lastname"
-            name="lastname"
-            :schema="nameUserSchema"
-          />
+            <InputText
+              class="w-full px-4"
+              label="Apellidos"
+              :label-props="{ class: 'text-white' }"
+              :input-props="{ class: 'text-white' }"
+              :error-props="{ class: 'text-red-200' }"
+              v-model="data.lastname"
+              name="lastname"
+              :schema="nameUserSchema"
+            />
+          </template>
+          <template v-else>
+            <InputText
+              class="w-full px-4"
+              label="Nombre de la empresa"
+              :label-props="{ class: 'text-white' }"
+              :input-props="{ class: 'text-white' }"
+              :error-props="{ class: 'text-red-200' }"
+              v-model="data.firstname"
+              name="firstname"
+              :schema="nameUserSchema"
+            />
+          </template>
 
           <InputText
             class="w-full px-4"
