@@ -21,8 +21,8 @@ const {
 
 <template>
   <div>
-    <div class="flex flex-col w-full gap-1">
-      <slot name="label" :id="id">
+    <div v-bind="wrapperProps" class="flex flex-col w-full gap-1">
+      <slot name="label" :id="id" :label="label" :labelProps="labelProps">
         <label v-if="label" v-bind="labelProps" class="px-1" :for="id">
           {{ label }}
         </label>
@@ -34,6 +34,7 @@ const {
           'outline-(--c-border-hover)': isFocused,
           'outline-(--c-error)': error,
         }"
+        v-bind="innerProps"
       >
         <slot name="prefix-icon" />
 
