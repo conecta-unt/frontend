@@ -1,5 +1,7 @@
 import z from "zod/v4";
 
+export const stringSchema = z.string();
+
 export const nameUserSchema = z
   .string()
   .min(1, "Debe contener al menos 1 caractér.")
@@ -45,3 +47,9 @@ export const bioSchema = z
   .min(1, { message: "La biografía no puede estar vacía" })
   .max(1000, { message: "La biografía no debe exceder los 1000 caracteres" })
   .optional();
+
+export const offerSchema = z.enum(["internship", "project", "advisory"]);
+
+export const descriptionSchema = z
+  .string()
+  .min(1, { message: "Este campo es requerido." });

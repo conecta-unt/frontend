@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from "axios";
 import z from "zod/v4";
 import { API_URL, FRONTEND_URL } from "~/config/api";
 import { emailSchema } from "~/schemas";

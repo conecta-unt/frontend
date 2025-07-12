@@ -14,6 +14,7 @@ const { error, issues, validate } = useValidationInput({
   <InputBase
     v-bind="{
       ...props,
+      schema: undefined,
       showAllErrors: undefined,
       showErrorBullets: undefined,
       modelValue: undefined,

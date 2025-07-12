@@ -17,6 +17,8 @@ export interface InputBaseProps {
   helpProps?: HTMLAttributes;
   error?: string;
   errorProps?: HTMLAttributes;
+  wrapperProps?: HTMLAttributes;
+  innerProps?: HTMLAttributes;
 }
 
 export function useInputBase(props: InputBaseProps) {
