@@ -31,11 +31,17 @@ const isInvalidData = computed(() => {
   return result.success;
 });
 
+const isLoading = ref(false);
+
 const submit = async () => {
   try {
+    isLoading.value = true;
     const offer = await $axios.post<OfferI>("/offer/create", data);
     offers.value = [offer.data, ...offers.value];
+    data.type = undefined;
+    data.description = "";
   } catch {}
+  isLoading.value = false;
 };
 </script>
 
@@ -59,7 +65,7 @@ const submit = async () => {
       <InputCheckbox v-model="data.team" label="Postulación en equipo" />
     </template>
 
-    <Button :disabled="!isInvalidData">
+    <Button :disabled="!isInvalidData" :isLoading="isLoading">
       <Icon name="mdi:add" />
       Crear oferta
     </Button>
