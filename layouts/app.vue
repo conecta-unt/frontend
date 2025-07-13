@@ -82,12 +82,20 @@ onMounted(async () => {
                 Mis ofertas
               </NuxtLink>
             </li>
-            <li v-if="showApplicationsLink">
-              <NuxtLink to="/applications">
-                <Icon name="mdi:document" class="icon" />
-                Mis postulaciones
-              </NuxtLink>
-            </li>
+            <template v-if="showApplicationsLink">
+              <li>
+                <NuxtLink to="/app/equipos">
+                  <Icon name="mdi:people" class="icon" />
+                  Equipos
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/applications">
+                  <Icon name="mdi:document" class="icon" />
+                  Mis postulaciones
+                </NuxtLink>
+              </li>
+            </template>
           </ul>
         </nav>
 
