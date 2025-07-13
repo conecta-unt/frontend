@@ -19,6 +19,15 @@ onMounted(async () => {
 <template>
   <NuxtLayout name="app">
     <div class="flex flex-col gap-6">
+      <section class="flex w-full justify-end md:px-6">
+        <Button to="/app/equipos/crear">
+          <Icon name="mdi:add" />
+          Crear equipo
+        </Button>
+      </section>
+
+      <Separator bgBefore="var(--c-primary)" />
+
       <section v-if="invitations" class="flex flex-col w-full gap-4">
         <h2 class="text-xl">Invitaciones pendientes</h2>
 
