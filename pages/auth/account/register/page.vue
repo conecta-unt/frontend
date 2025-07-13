@@ -42,7 +42,21 @@ const dataSchema = z.object({
   password: passwordSchema,
 });
 
+const enterpriseSchema = z.object({
+  role: z.string(),
+  username: usernameSchema,
+  firstname: nameUserSchema,
+  lastname: nameUserSchema.optional(),
+  email: emailSchema,
+  password: passwordSchema,
+});
+
 const isValidData = computed(() => {
+  if (data.role === "bussines_client") {
+    const result = enterpriseSchema.safeParse(data);
+    return result.success;
+  }
+
   const result = dataSchema.safeParse(data);
   return result.success;
 });
