@@ -1,38 +1,28 @@
-import * as z from "zod/v4";
-import type { $ZodIssue } from "zod/v4/core";
+import * as z from "zod"
 
-export type ValidationSchema =
-  | z.ZodString
-  | z.ZodEmail
-  | z.ZodOptional<z.ZodString>
-  | z.ZodOptional<z.ZodEmail>;
+export type ValidationSchema = z.ZodTypeAny
 
 export interface ValidationInputProps {
-  schema?: ValidationSchema;
+  schema?: ValidationSchema
 }
 
 export function useValidationInput(props: ValidationInputProps) {
-  const issues = ref<$ZodIssue[]>();
+  const issues = ref<z.ZodIssue[]>()
 
   const error = computed(() => {
-    if (!issues.value || !issues.value.length) return undefined;
-    return issues.value[0].message;
-  });
+    if (!issues.value?.length) return undefined
+    return issues.value[0].message
+  })
 
   const validate = (value: unknown) => {
-    if (!props.schema) return;
-    const result = props.schema.safeParse(value);
-
-    if (!result.success) {
-      issues.value = result.error.issues;
-    } else {
-      issues.value = undefined;
-    }
-  };
+    if (!props.schema) return
+    const result = props.schema.safeParse(value)
+    issues.value = result.success ? undefined : result.error.issues
+  }
 
   return {
     error,
     issues,
     validate,
-  };
+  }
 }
