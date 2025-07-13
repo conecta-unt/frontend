@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { InvitationI, UserI } from "~/types/invitations";
+import type { TeamI, UserI } from "~/types/team";
 
 interface Props {
-  invitation: InvitationI;
+  team: TeamI;
 }
 defineProps<Props>();
+
+defineEmits(["accept", "reject"]);
 
 const getName = (user: UserI) => {
   return `${user.profile.firstname} ${user.profile.lastname}`;
@@ -19,25 +21,27 @@ const showDetails = ref(false);
   >
     <div class="flex items-center py-2 px-4">
       <div class="flex-1">
-        <h3>{{ invitation.team.name }}</h3>
+        <h3>{{ team.team.name }}</h3>
         <p>
           Creador:
           {{
             getName(
-              invitation.team.members.filter(
-                (member) => member.role === "owner"
-              )[0].user
+              team.team.members.filter((member) => member.role === "owner")[0]
+                .user
             )
           }}
         </p>
       </div>
 
-      <div class="flex items-center flex-col gap-1">
-        <Button class="w-full">
+      <div
+        v-if="team.confirmed !== true"
+        class="flex items-center flex-col gap-1"
+      >
+        <Button @click="$emit('accept', team.teamId)" class="w-full">
           <Icon name="mdi:check" />
           Aceptar
         </Button>
-        <Button class="w-full bg-red-500">
+        <Button @click="$emit('reject', team.teamId)" class="w-full bg-red-500">
           <Icon name="mdi:close" />
           Rechazar
         </Button>
@@ -57,7 +61,7 @@ const showDetails = ref(false);
     </div>
 
     <div v-show="showDetails" class="flex flex-col gap-4 py-2 px-4">
-      <template v-for="(member, index) in invitation.team.members">
+      <template v-for="(member, index) in team.team.members">
         <div class="flex flex-col">
           <p>@{{ member.user.username }}</p>
           <p>{{ getName(member.user) }}</p>
@@ -65,7 +69,7 @@ const showDetails = ref(false);
         </div>
 
         <Separator
-          v-if="index != invitation.team.members.length - 1"
+          v-if="index != team.team.members.length - 1"
           bg-before="var(--c-primary)"
         />
       </template>

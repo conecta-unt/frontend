@@ -1,12 +1,12 @@
-export interface InvitationI {
+export interface TeamI {
   userId: number;
   teamId: number;
-  team: TeamI;
+  team: TeamClassI;
   role: string;
   confirmed: boolean;
 }
 
-export interface TeamI {
+export interface TeamClassI {
   id: number;
   name: string;
   members: MemberI[];

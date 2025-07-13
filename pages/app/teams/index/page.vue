@@ -1,18 +1,39 @@
 <script setup lang="ts">
-import type { InvitationI } from "~/types/invitations";
+import type { TeamI } from "~/types/team";
 import Invitation from "./invitation.vue";
 
 const { $axios } = useNuxtApp();
 
-const invitations = useState<InvitationI[]>();
+const invitations = useState<TeamI[]>();
+const teams = useState<TeamI[]>();
 
 const getInvitations = async () => {
   const result = await $axios.get("/team/invitations");
   invitations.value = result.data;
 };
 
+const getTeams = async () => {
+  const result = await $axios.get("/team");
+  teams.value = result.data;
+};
+
+const confirmInvitation = async (confirmed: boolean, teamId: number) => {
+  await $axios.patch("/team/invitations/confirm", { confirmed, teamId });
+  await getInvitations();
+  await getTeams();
+};
+
+const acceptInvitation = async (teamId: number) => {
+  await confirmInvitation(true, teamId);
+};
+
+const rejectInvitation = async (teamId: number) => {
+  await confirmInvitation(false, teamId);
+};
+
 onMounted(async () => {
   if (!invitations.value) await getInvitations();
+  if (!teams.value) await getTeams();
 });
 </script>
 
@@ -28,7 +49,10 @@ onMounted(async () => {
 
       <Separator bgBefore="var(--c-primary)" />
 
-      <section v-if="invitations" class="flex flex-col w-full gap-4">
+      <section
+        v-if="invitations && invitations.length"
+        class="flex flex-col w-full gap-4"
+      >
         <h2 class="text-xl">Invitaciones pendientes</h2>
 
         <div
@@ -36,7 +60,23 @@ onMounted(async () => {
           :key="invitation.teamId"
           class="flex flex-col gap-4"
         >
-          <Invitation :invitation="invitation" />
+          <Invitation
+            @accept="acceptInvitation"
+            @reject="rejectInvitation"
+            :team="invitation"
+          />
+        </div>
+      </section>
+
+      <section v-if="teams && teams.length" class="flex flex-col w-full gap-4">
+        <h2 class="text-xl">Equipos</h2>
+
+        <div
+          v-for="team in teams"
+          :key="team.teamId"
+          class="flex flex-col gap-4"
+        >
+          <Invitation :team="team" />
         </div>
       </section>
     </div>
