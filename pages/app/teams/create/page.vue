@@ -16,6 +16,7 @@ interface Usuario {
   lasname: string
   profileImage: string
   role: string
+  teamRole?: string
 }
 
 const teamName = ref("")
@@ -44,8 +45,8 @@ const buscarUsuarios = async () => {
       (user: Usuario) => !members.value.some((m) => m.id === user.id)
     )
   } catch (err: any) {
-  console.error("Error real:", err.response?.data || err)
-  formErrors.value.push("Ocurrió un error al buscar usuarios.")
+    console.error("Error real:", err.response?.data || err)
+    formErrors.value.push("Ocurrió un error al buscar usuarios.")
   } finally {
     isSearching.value = false
   }
@@ -61,9 +62,17 @@ watch(
 const agregarMiembro = (user: Usuario) => {
   const yaExiste = members.value.some((m) => m.id === user.id)
   if (!yaExiste) {
-    members.value.push(user)
+    const nuevoMiembro = { ...user, teamRole: user.role === "teacher" ? "supervisor" : "colaborator" }
+    members.value.push(nuevoMiembro)
     searchUsername.value = ""
     userResults.value = []
+  }
+}
+
+const cambiarRol = (id: number, nuevoRol: string) => {
+  const miembro = members.value.find((m) => m.id === id)
+  if (miembro) {
+    miembro.teamRole = nuevoRol
   }
 }
 
@@ -90,18 +99,17 @@ const crearEquipo = async () => {
         name: teamName.value,
         members: members.value.map((m) => ({
           id: m.id,
-          role: m.role || "colaborator"
+          role: m.teamRole || "colaborator"
         }))
       }, { baseURL: API_URL })
       alert(`Equipo "${teamName.value}" creado.`)
       teamName.value = ""
       searchUsername.value = ""
       members.value = []
-    }  catch (err: any) {
-    console.error("Error al crear el equipo:", err.response?.data || err)
-    formErrors.value.push("Ocurrió un error al crear el equipo.")
-}
-
+    } catch (err: any) {
+      console.error("Error al crear el equipo:", err.response?.data || err)
+      formErrors.value.push("Ocurrió un error al crear el equipo.")
+    }
   }
 }
 </script>
@@ -121,7 +129,6 @@ const crearEquipo = async () => {
           placeholder="Buscar usuario..."
           class="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></span>
       </div>
       <ul
         v-if="searchUsername.trim() && userResults.length"
@@ -175,6 +182,20 @@ const crearEquipo = async () => {
                 @{{ miembro.username }}
                 <span v-if="miembro.role" class="ml-1 font-medium text-blue-600">• {{ miembro.role }}</span>
               </p>
+              <div v-if="miembro.role === 'teacher'" class="mt-1">
+                <label class="text-xs font-medium text-gray-600">Rol en el equipo:</label>
+                <select
+                  v-model="miembro.teamRole"
+                  @change="cambiarRol(miembro.id, miembro.teamRole || 'colaborator')"
+                  class="text-xs border rounded px-2 py-1 ml-2"
+                >
+                  <option value="supervisor">Supervisor</option>
+                  <option value="colaborator">Colaborador</option>
+                </select>
+              </div>
+              <div v-else class="text-xs text-gray-500 mt-1">
+                Rol en el equipo: Colaborador
+              </div>
             </div>
 
             <button
@@ -197,7 +218,7 @@ const crearEquipo = async () => {
 
       <button
         @click="crearEquipo"
-        class="mt-6 bg-yellow-300 text-black px-6 py-2 rounded-lg hover:bg-yellow-300 w-full transition shadow-lg flex justify-center items-center gap-2 font-bold"
+        class="mt-6 bg-yellow-300 text-black px-6 py-2 rounded-lg hover:bg-yellow-400 w-full transition shadow-lg flex justify-center items-center gap-2 font-bold"
       >
         Crear equipo
       </button>
