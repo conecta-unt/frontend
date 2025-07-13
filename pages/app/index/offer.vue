@@ -48,7 +48,7 @@ defineProps<OfferDetalledI>();
       </p>
     </div>
 
-    <div class="flex text-gray-500 mt-auto gap-6">
+    <div v-if="type !== 'internship'" class="flex text-gray-500 mt-auto gap-6">
       <span>
         Supervisor:
         <span :class="supervisorRequired ? 'text-green-600' : 'text-red-500'">

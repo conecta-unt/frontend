@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const model = defineModel();
+</script>
 
 <template>
   <InputBase
@@ -12,6 +14,15 @@
           {{ label }}
         </label>
       </div>
+    </template>
+
+    <template #default="{ id, inputProps, onFocusin, onFocusout }">
+      <input
+        v-model="model"
+        v-bind="{ id, ...inputProps, onFocusin, onFocusout }"
+        class="w-full outline-none"
+        type="checkbox"
+      ></input>
     </template>
   </InputBase>
 </template>
