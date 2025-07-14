@@ -118,8 +118,6 @@ const uploadProfileImage = async () => {
     const res = await $axios.post("/user/profile/profile-image", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-
-    console.log("✅ Imagen subida:", res.data);
   } catch (error: any) {
     const msg = error.response?.data?.message || "Error al subir la imagen";
     console.error("❌", msg);

@@ -47,8 +47,6 @@ const getUserProfile = async () => {
   }
 };
 
-console.log(route.fullPath);
-
 onMounted(async () => {
   if (!user.value) {
     await getUserProfile();
