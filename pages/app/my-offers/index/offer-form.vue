@@ -40,6 +40,8 @@ const submit = async () => {
     offers.value = [offer.data, ...offers.value];
     data.type = undefined;
     data.description = "";
+    data.supervisorRequired = false;
+    data.team = false;
   } catch {}
   isLoading.value = false;
 };
