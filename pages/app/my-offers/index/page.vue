@@ -98,7 +98,9 @@ onMounted(async () => {
               {{ offer.description }}
             </p>
 
-            <div class="flex justify-between text-xs text-gray-500 mt-auto gap-6">
+            <div
+              class="flex justify-between text-xs text-gray-500 mt-auto gap-6"
+            >
               <span>
                 Supervisor:
                 <span
@@ -120,14 +122,26 @@ onMounted(async () => {
 
             <button
               class="mt-4 text-sm text-white bg-orange-500 hover:bg-orange-400 px-4 py-2 rounded-lg self-start shadow"
-              @click="verPostulaciones = verPostulaciones === offer.id ? null : offer.id"
+              @click="
+                verPostulaciones =
+                  verPostulaciones === offer.id ? null : offer.id
+              "
             >
-              {{ verPostulaciones === offer.id ? 'Ocultar postulaciones' : 'Ver postulaciones' }}
+              {{
+                verPostulaciones === offer.id
+                  ? "Ocultar postulaciones"
+                  : "Ver postulaciones"
+              }}
             </button>
 
             <Transition name="fade">
-              <div v-if="verPostulaciones === offer.id" class="mt-4 border-t pt-4 space-y-3">
-                <h3 class="text-sm font-semibold text-gray-700 mb-2">Postulaciones recibidas:</h3>
+              <div
+                v-if="verPostulaciones === offer.id"
+                class="mt-4 border-t pt-4 space-y-3"
+              >
+                <h3 class="text-sm font-semibold text-gray-700 mb-2">
+                  Postulaciones recibidas:
+                </h3>
 
                 <div v-if="postulacionesPorOferta[offer.id]?.length">
                   <ul class="space-y-3">
@@ -139,18 +153,32 @@ onMounted(async () => {
                       <div v-if="post.type === 'solo' && post.applicant">
                         <p class="text-sm font-medium text-gray-800">
                           Estudiante:
-                          {{ post.applicant.firstname }} {{ post.applicant.lastname }}
-                          <span class="text-gray-500">(@{{ post.applicant.username }})</span>
+                          {{ post.applicant.firstname }}
+                          {{ post.applicant.lastname }}
+                          <NuxtLink
+                            :to="`/app/perfil?user=${post.applicant.username}`"
+                            class="text-blue-400 underline"
+                          >
+                            (@{{ post.applicant.username }})
+                          </NuxtLink>
                         </p>
                       </div>
                       <div v-else-if="post.type === 'team' && post.team">
-                        <p class="text-sm font-medium text-gray-800 mb-1">Equipo: {{ post.team.name }}</p>
+                        <p class="text-sm font-medium text-gray-800 mb-1">
+                          Equipo: {{ post.team.name }}
+                        </p>
                         <ul class="ml-4 list-disc text-xs text-gray-600">
                           <li
                             v-for="miembro in post.team.members"
                             :key="miembro.id"
                           >
-                            {{ miembro.firstname }} {{ miembro.lastname }} - @{{ miembro.username }}
+                            {{ miembro.firstname }} {{ miembro.lastname }} -
+                            <NuxtLink
+                              :to="`/app/perfil?user=${miembro.username}`"
+                              class="text-blue-400 underline"
+                            >
+                              (@{{ miembro.username }})
+                            </NuxtLink>
                           </li>
                         </ul>
                       </div>
@@ -161,16 +189,16 @@ onMounted(async () => {
                           :class="{
                             'text-blue-600': post.accepted === null,
                             'text-green-600': post.accepted === true,
-                            'text-red-600': post.accepted === false
+                            'text-red-600': post.accepted === false,
                           }"
                           class="font-semibold"
                         >
                           {{
                             post.accepted === null
-                              ? 'Pendiente'
+                              ? "Pendiente"
                               : post.accepted
-                              ? 'Aceptado'
-                              : 'Rechazado'
+                              ? "Aceptado"
+                              : "Rechazado"
                           }}
                         </span>
                       </p>

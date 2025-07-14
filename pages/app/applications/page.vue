@@ -1,47 +1,46 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useNuxtApp } from '#app'
-import { API_URL } from '~/config/api'
+const { $axios } = useNuxtApp();
 
 interface Postulacion {
-  id: number
-  type: string
+  id: number;
+  type: string;
   offer: {
-    id: number
-    type: string
-    description: string
-  }
+    id: number;
+    type: string;
+    description: string;
+  };
   team: {
-    id: number
-    name: string
-  }
-  accepted: boolean | null
+    id: number;
+    name: string;
+  } | null;
+  accepted: boolean | null;
 }
 
-const postulaciones = ref<Postulacion[]>([])
-const isLoading = ref(true)
+const postulaciones = ref<Postulacion[]>([]);
+const isLoading = ref(true);
 
 onMounted(async () => {
   try {
-    const { $axios } = useNuxtApp()
-    const { data } = await $axios.get('/postulation', {
-      baseURL: API_URL,
-    })
-    postulaciones.value = data
+    const { data } = await $axios.get("/postulation");
+    postulaciones.value = data;
   } catch (error) {
-    console.error('Error al obtener postulaciones:', error)
+    console.error("Error al obtener postulaciones:", error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-})
+});
 </script>
 
 <template>
-  <NuxtLayout name="app">
+  <NuxtLayout name="app" v-slot="{ user }">
     <div class="max-w-5xl mx-auto mt-10 px-6">
-      <h1 class="text-3xl font-extrabold text-gray-800 mb-8">Mis postulaciones</h1>
+      <h1 class="text-3xl font-extrabold text-gray-800 mb-8">
+        Mis postulaciones
+      </h1>
 
-      <div v-if="isLoading" class="text-gray-500 text-center">Cargando postulaciones...</div>
+      <div v-if="isLoading" class="text-gray-500 text-center">
+        Cargando postulaciones...
+      </div>
 
       <div v-else-if="postulaciones.length" class="grid gap-6 sm:grid-cols-2">
         <div
@@ -50,8 +49,11 @@ onMounted(async () => {
           class="bg-white border rounded-xl shadow-md p-5 transition hover:shadow-lg"
         >
           <div class="flex items-center justify-between mb-2">
-            <h2 class="text-xl font-semibold text-blue-700">
-              {{ post.team.name }}
+            <h2 v-if="post.team" class="text-xl font-semibold text-blue-700">
+              Equipo: {{ post.team.name }}
+            </h2>
+            <h2 v-else class="text-xl font-semibold text-blue-700">
+              Postulación individual
             </h2>
             <span
               class="text-xs px-2 py-1 rounded-full font-medium"
@@ -63,10 +65,10 @@ onMounted(async () => {
             >
               {{
                 post.accepted === null
-                  ? 'Pendiente'
+                  ? "Pendiente"
                   : post.accepted
-                  ? 'Aceptado'
-                  : 'Rechazado'
+                  ? "Aceptado"
+                  : "Rechazado"
               }}
             </span>
           </div>
@@ -83,7 +85,9 @@ onMounted(async () => {
         </div>
       </div>
 
-      <p v-else class="text-gray-500 text-center mt-10">No tienes postulaciones aún.</p>
+      <p v-else class="text-gray-500 text-center mt-10">
+        No tienes postulaciones aún.
+      </p>
     </div>
   </NuxtLayout>
 </template>

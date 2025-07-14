@@ -8,6 +8,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const { $axios } = useNuxtApp();
+const route = useRoute();
 const router = useRouter();
 
 const user = useState<UserProfileI>("user");
@@ -46,12 +47,29 @@ const getUserProfile = async () => {
   }
 };
 
+console.log(route.fullPath);
+
 onMounted(async () => {
   if (!user.value) {
     await getUserProfile();
+
+    if (
+      user.value &&
+      route.fullPath === "/app" &&
+      ["individual_client", "bussines_client"].includes(user.value.role)
+    )
+      navigateTo("/app/mis-ofertas");
   }
+
   if (user.value && props.roles && !props.roles.includes(user.value.role))
     navigateTo("/app");
+
+  if (
+    user.value &&
+    route.fullPath === "/app" &&
+    ["individual_client", "bussines_client"].includes(user.value.role)
+  )
+    navigateTo("/app/mis-ofertas");
 });
 </script>
 
@@ -70,19 +88,21 @@ onMounted(async () => {
         <!-- Desktop -->
         <nav class="desktop-nav">
           <ul>
-            <li>
-              <NuxtLink to="/app">
-                <Icon name="mdi:home" class="icon" />
-                Inicio
-              </NuxtLink>
-            </li>
-            <li v-if="showOffersLink">
-              <NuxtLink to="/app/mis-ofertas">
-                <Icon name="mdi:briefcase" class="icon" />
-                Mis ofertas
-              </NuxtLink>
-            </li>
+            <template v-if="showOffersLink">
+              <li>
+                <NuxtLink to="/app/mis-ofertas">
+                  <Icon name="mdi:briefcase" class="icon" />
+                  Mis ofertas
+                </NuxtLink>
+              </li>
+            </template>
             <template v-if="showApplicationsLink">
+              <li>
+                <NuxtLink to="/app">
+                  <Icon name="mdi:home" class="icon" />
+                  Inicio
+                </NuxtLink>
+              </li>
               <li>
                 <NuxtLink to="/app/equipos">
                   <Icon name="mdi:people" class="icon" />
@@ -90,7 +110,7 @@ onMounted(async () => {
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink to="/applications">
+                <NuxtLink to="/app/postulaciones">
                   <Icon name="mdi:document" class="icon" />
                   Mis postulaciones
                 </NuxtLink>
@@ -159,7 +179,7 @@ onMounted(async () => {
             </NuxtLink>
           </li>
           <li v-if="showApplicationsLink" @click="isMobileMenuOpen = false">
-            <NuxtLink to="/applications">
+            <NuxtLink to="/app/postulaciones">
               <Icon name="mdi:document" class="icon" />
               Mis postulaciones
             </NuxtLink>
